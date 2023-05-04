@@ -1,11 +1,10 @@
 const express = require("express");
+const noteController = require("../../controllers/noteController");
 
 const router = express.Router();
 
-// first parameter is the route, second parameter is function to be executed
-router.get("/", (req, res) => {
-  res.send("Get all notes");
-});
+// 1ST route, 2ND function to be executed
+router.get("/", noteController.getAllNotes);
 
 router.get("/:note", (req, res) => {
   res.send("Get an existing note");
