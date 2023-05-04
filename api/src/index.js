@@ -1,5 +1,5 @@
 const express = require('express');
-const v1Notes = require('./v1/routes/notes');
+const v1Notes = require('./v1/routes/noteRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000
