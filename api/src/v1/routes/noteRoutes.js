@@ -6,19 +6,15 @@ const router = express.Router();
 // 1ST route, 2ND function to be executed
 router.get("/", noteController.getAllNotes);
 
-router.get("/:note", (req, res) => {
-  res.send("Get an existing note");
-});
+router.get("/:noteId", noteController.getOneNote);
 
-router.post("/", (req, res) => {
-  res.send("Create a new note");
-});
+router.post("/", noteController.createNewNote);
 
-router.patch("/:note", (req, res) => {
+router.patch("/:noteId", (req, res) => {
   res.send("Update an existing note");
 });
 
-router.delete("/:note", (req, res) => {
+router.delete("/:noteId", (req, res) => {
   res.send("Delete an existing note");
 });
 
