@@ -36,8 +36,13 @@ const createNewNote = (newNote) => {
   }
 };
 
-const updateOneNote = () => {
-  return;
+const updateOneNote = (noteId, changes) => {
+  try {
+    const updatedNote = Notes.updateOneNotes(noteId, changes);
+    return updatedNote;
+  } catch (error) {
+     throw error;
+  }
 };
 
 const deleteOneNote = (id) => {

@@ -66,8 +66,24 @@ const createNewNote = (req, res) => {
 };
 
 const updateOneNote = (req, res) => {
-  const updatedNote = noteService.updateOneNote();
-  res.send("Update an existing note");
+  const {
+    body,
+    params: { noteId },
+  } = req;
+  if (!noteId) {
+    res.status(400).send({
+      status: "FAILED",
+      data: { error: "Parameter ':noteId' can not be empty" },
+    });
+  }
+  try {
+    const updatedNote = noteService.updateOneNote(noteId, body);
+    res.send({ status: "OK", data: updatedNote });
+  } catch (error) {
+    res
+      .status(error?.status || 500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
+  }
 };
 
 const deleteOneNote = (req, res) => {

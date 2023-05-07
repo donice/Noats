@@ -47,8 +47,37 @@ const createNewNote = (newNote) => {
   }
 };
 
-const updateOneNote = () => {
+const updateOneNote = (noteId, changes) => {
+  try {
+    const isAlreadyAdded = 
+      DB.notes.findIndex((note) => note.title == changes.title ) > -1;
+    if (isAlreadyAdded) {
+      throw {
+        status: 400,
+        message: `Note with the name '${changes.name}' already exists`,
+      };
+    }
 
+    const indexForUpdate = DB.notes.findIndex((note) => note.title === changes.title);
+    if (indexForUpdate === -1) {
+      throw {
+        status: 400,
+        message: `Can't find workout with the id '${workoutId}'`,
+      };
+    }
+
+    const updatedNote = {
+      ...DB.notes[indexForUpdate],
+      ...changes,
+      updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+    }
+
+    DB.notes[indexForUpdate] = updatedNote;
+    saveToDatabase(DB);
+    return updatedNote;
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
+  }
 };
 
 const deleteOneNote = (noteId) => {
