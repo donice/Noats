@@ -40,8 +40,12 @@ const updateOneNote = () => {
   return;
 };
 
-const deleteOneNote = () => {
-  return;
+const deleteOneNote = (id) => {
+  try {
+    Notes.deleteOneNote(id);
+  } catch (error) {
+    throw error;
+  };
 };
 
 module.exports = {

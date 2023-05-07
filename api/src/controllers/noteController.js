@@ -1,3 +1,4 @@
+const { request } = require("express");
 const noteService = require("../services/noteService");
 
 const getAllNotes = (req, res) => {
@@ -11,18 +12,25 @@ const getAllNotes = (req, res) => {
   }
 };
 
-const getOneNote = (noteId) => {
+const getOneNote = (req, res) => {
+  const {
+    params: { noteId },
+  } = req;
+  if (!noteId) {
+    res.status(400).send({
+      status: "FAILED",
+      data: { error: "Parameter ':noteId' is required" },
+    });
+  }
+
   try {
-    const note = DB.notes.find((note) => note.id === noteId);
-    if (!note) {
-      throw {
-        status: 400,
-        messages: `Can't find note with id ${noteId}`,
-      };
-    }
-    return note;
+    const note = noteService.getOneNote(noteId);
+    res.send({ status: "OK", data: note });
   } catch (error) {
-    throw { status: error?.status || 500, message: error?.message || error };
+    console.error(error);
+    res
+      .status(error?.status || 500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
   }
 };
 
@@ -59,12 +67,29 @@ const createNewNote = (req, res) => {
 
 const updateOneNote = (req, res) => {
   const updatedNote = noteService.updateOneNote();
-  res.send("Update an existing workout");
+  res.send("Update an existing note");
 };
 
 const deleteOneNote = (req, res) => {
-  noteService.deleteOneWorkout();
-  res.send("Delete an existing workout");
+  const {
+    params: { noteId },
+  } = req;
+
+  if (!noteId) {
+    res.status(400).send({
+      status: "FAILED",
+      data: { error: "Parameter ':noteId' can not be empty" },
+    });
+  }
+
+  try {
+    noteService.deleteOneNote(noteId);
+    res.status(204).send({ status: "OK" });
+  } catch (error) {
+    res
+      .status(error?.status || 500)
+      .send({ status: "FAILED", data: { error: error?.message || error } });
+  }
 };
 
 module.exports = {

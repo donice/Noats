@@ -47,8 +47,30 @@ const createNewNote = (newNote) => {
   }
 };
 
+const updateOneNote = () => {
+
+};
+
+const deleteOneNote = (noteId) => {
+  try {
+    const indexForDeletion = DB.notes.findIndex((note) => note.id === noteId);
+    if (indexForDeletion === -1) {
+      throw {
+        status: 400,
+        message: `Can't find note with the id '${noteId}'`,
+      };
+    }
+    DB.notes.splice(indexForDeletion, 1);
+    saveToDatabase(DB)
+  } catch(error) {
+    throw { status: error?.status || 500, message: error?.message || error}
+  }
+};
+
 module.exports = {
   getAllNotes,
   createNewNote,
   getOneNote,
+  updateOneNote,
+  deleteOneNote
 };

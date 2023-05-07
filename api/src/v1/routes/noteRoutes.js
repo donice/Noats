@@ -10,13 +10,9 @@ router.get("/:noteId", noteController.getOneNote);
 
 router.post("/", noteController.createNewNote);
 
-router.patch("/:noteId", (req, res) => {
-  res.send("Update an existing note");
-});
+router.patch("/:noteId", noteController.updateOneNote);
 
-router.delete("/:noteId", (req, res) => {
-  res.send("Delete an existing note");
-});
+router.delete("/:noteId", noteController.deleteOneNote);
 
 
 module.exports = router;
