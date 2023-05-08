@@ -38,12 +38,13 @@ const createNewNote = (newNote) => {
 
 const updateOneNote = (noteId, changes) => {
   try {
-    const updatedNote = Notes.updateOneNotes(noteId, changes);
+    const updatedNote = Workout.updateOneNote(noteId, changes);
     return updatedNote;
   } catch (error) {
-     throw error;
+    throw error;
   }
 };
+
 
 const deleteOneNote = (id) => {
   try {

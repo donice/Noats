@@ -71,10 +71,12 @@ const updateOneNote = (req, res) => {
     params: { noteId },
   } = req;
   if (!noteId) {
-    res.status(400).send({
-      status: "FAILED",
-      data: { error: "Parameter ':noteId' can not be empty" },
-    });
+    res
+      .status(400)
+      .send({
+        status: "FAILED",
+        data: { error: "Parameter ':noteId' can not be empty" },
+      });
   }
   try {
     const updatedNote = noteService.updateOneNote(noteId, body);

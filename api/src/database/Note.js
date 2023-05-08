@@ -49,29 +49,28 @@ const createNewNote = (newNote) => {
 
 const updateOneNote = (noteId, changes) => {
   try {
-    const isAlreadyAdded = 
-      DB.notes.findIndex((note) => note.title == changes.title ) > -1;
+    const isAlreadyAdded =
+      DB.notes.findIndex((note) => note.title === changes.title) > -1;
     if (isAlreadyAdded) {
       throw {
         status: 400,
-        message: `Note with the name '${changes.name}' already exists`,
+        message: `Note with the title '${changes.title}' already exists`,
       };
     }
-
-    const indexForUpdate = DB.notes.findIndex((note) => note.title === changes.title);
+    const indexForUpdate = DB.notes.findIndex(
+      (note) => note.id === noteId
+    );
     if (indexForUpdate === -1) {
       throw {
         status: 400,
-        message: `Can't find workout with the id '${workoutId}'`,
+        message: `Can't find note with the id '${noteId}'`,
       };
     }
-
     const updatedNote = {
       ...DB.notes[indexForUpdate],
       ...changes,
       updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-    }
-
+    };
     DB.notes[indexForUpdate] = updatedNote;
     saveToDatabase(DB);
     return updatedNote;
